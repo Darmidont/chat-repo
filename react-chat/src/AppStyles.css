@@ -1,0 +1,129 @@
+/* Main container */
+.skynet-main-container {
+  min-height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #18181b;
+}
+
+.skynet-inner-container {
+  max-width: 700px;
+  width: 100%;
+  font-family: sans-serif;
+  color: #fff;
+  background: #18181b;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.skynet-title {
+  color: #a78bfa;
+}
+
+.skynet-loading-label {
+  color: #a78bfa;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.skynet-suggestions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.skynet-suggestion-card {
+  flex: 1;
+  background: #23232a;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  min-width: 0;
+  transition: border 0.2s;
+  box-shadow: 0 2px 8px #0002;
+}
+
+.skynet-suggestion-icon {
+  font-size: 24px;
+  color: #a78bfa;
+  margin-bottom: 8px;
+}
+
+.skynet-suggestion-title {
+  font-weight: 600;
+  color: #a78bfa;
+  margin-bottom: 4px;
+}
+
+.skynet-suggestion-text {
+  color: #d1d5db;
+  font-size: 14px;
+}
+
+.skynet-chat-area {
+  border: 1px solid #333;
+  background: #23232a;
+  padding: 16px;
+  min-height: 200px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.skynet-chat-empty {
+  color: #888;
+}
+
+.skynet-chat-message {
+  margin: 8px 0;
+  background: #2d2d36;
+  padding: 8px;
+  border-radius: 4px;
+  color: #fff;
+  text-align: left;
+  font-weight: 400;
+}
+
+.skynet-chat-message.user {
+  background: #373749;
+  text-align: right;
+  font-weight: 500;
+}
+
+.skynet-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.skynet-input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #23232a;
+  color: #fff;
+}
+
+.skynet-send-btn {
+  padding: 0 24px;
+  border-radius: 6px;
+  border: none;
+  background: #a78bfa;
+  color: #18181b;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 1;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.skynet-send-btn:disabled {
+  background: #a78bfa88;
+  cursor: not-allowed;
+  opacity: 0.6;
+} 
