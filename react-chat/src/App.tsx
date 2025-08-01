@@ -163,8 +163,7 @@ const splitAssistantResponse = (response: string): string => {
                             <div
                                 key={idx}
                                 onClick={() => setInput(s.text)}
-                                className="skynet-suggestion-card"
-                            >
+                                className="skynet-suggestion-card">
                                 <div className="skynet-suggestion-icon">{s.icon}</div>
                                 <div className="skynet-suggestion-title">{s.title}</div>
                                 <div className="skynet-suggestion-text">{s.text}</div>
@@ -179,8 +178,8 @@ const splitAssistantResponse = (response: string): string => {
                                 key={idx}
                                 className={`skynet-chat-message${msg.role === 'user' ? ' user' : ''}`}
                             >
-                                <pre style={{ 
-                                    whiteSpace: 'pre-wrap', 
+                                <pre style={{
+                                    whiteSpace: 'pre-wrap',
                                     wordWrap: 'break-word',
                                     margin: 0,
                                     fontFamily: 'inherit',
