@@ -186,6 +186,28 @@
   color: #fff;
 }
 
+.skynet-voice-btn {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #23232a;
+  color: #a78bfa;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+  min-width: 48px;
+}
+
+.skynet-voice-btn:hover {
+  background: #3a3a4a;
+  border-color: #555;
+}
+
+.skynet-voice-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .skynet-send-btn {
   padding: 0 24px;
   border-radius: 6px;

@@ -1,6 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
 import './AppStyles.css';
 
+// Speech Recognition types
+declare global {
+    interface Window {
+        SpeechRecognition: any;
+        webkitSpeechRecognition: any;
+    }
+}
+
 const copyToClipboard = async (text: string) => {
     try {
         await navigator.clipboard.writeText(text);
@@ -70,8 +78,10 @@ const splitAssistantResponse = (response: string): string => {
         const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; text: string }[]>([]);
         const [loading, setLoading] = useState(false);
         const [showScrollTop, setShowScrollTop] = useState(false);
+        const [isListening, setIsListening] = useState(false);
         const inputRef = useRef<HTMLInputElement>(null);
         const chatAreaRef = useRef<HTMLDivElement>(null);
+        const recognitionRef = useRef<any>(null);
 
         useEffect(() => {
             inputRef.current?.focus();
@@ -98,6 +108,32 @@ const splitAssistantResponse = (response: string): string => {
             }
         }, [messages]);
 
+        // Initialize speech recognition
+        useEffect(() => {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                recognitionRef.current = new SpeechRecognition();
+                recognitionRef.current.continuous = false;
+                recognitionRef.current.interimResults = false;
+                recognitionRef.current.lang = 'en-US';
+
+                recognitionRef.current.onresult = (event: any) => {
+                    const transcript = event.results[0][0].transcript;
+                    setInput(transcript);
+                    setIsListening(false);
+                };
+
+                recognitionRef.current.onerror = (event: any) => {
+                    console.error('Speech recognition error:', event.error);
+                    setIsListening(false);
+                };
+
+                recognitionRef.current.onend = () => {
+                    setIsListening(false);
+                };
+            }
+        }, []);
+
         const handleCopy = async (text: string) => {
             const success = await copyToClipboard(text);
             if (success) {
@@ -118,6 +154,13 @@ const splitAssistantResponse = (response: string): string => {
                     top: 0,
                     behavior: 'smooth'
                 });
+            }
+        };
+
+        const startListening = () => {
+            if (recognitionRef.current && !isListening) {
+                setIsListening(true);
+                recognitionRef.current.start();
             }
         };
 
@@ -216,6 +259,14 @@ const splitAssistantResponse = (response: string): string => {
                             placeholder="Type your message..."
                             disabled={loading}
                         />
+                        <button
+                            onClick={startListening}
+                            disabled={loading || isListening}
+                            className="skynet-voice-btn"
+                            title="Voice input"
+                        >
+                            {isListening ? '🎤' : '🎙️'}
+                        </button>
                         <button
                             onClick={handleSend}
                             disabled={loading}
