@@ -69,7 +69,6 @@ const splitAssistantResponse = (response: string): string => {
         const [input, setInput] = useState('');
         const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; text: string }[]>([]);
         const [loading, setLoading] = useState(false);
-        const [copiedMessageId, setCopiedMessageId] = useState<number | null>(null);
         const [showScrollTop, setShowScrollTop] = useState(false);
         const inputRef = useRef<HTMLInputElement>(null);
         const chatAreaRef = useRef<HTMLDivElement>(null);
@@ -99,11 +98,10 @@ const splitAssistantResponse = (response: string): string => {
             }
         }, [messages]);
 
-        const handleCopy = async (text: string, messageId: number) => {
+        const handleCopy = async (text: string) => {
             const success = await copyToClipboard(text);
             if (success) {
-                setCopiedMessageId(messageId);
-                setTimeout(() => setCopiedMessageId(null), 2000);
+                // Copy successful - could add visual feedback here if needed
             }
         };
 
@@ -189,7 +187,7 @@ const splitAssistantResponse = (response: string): string => {
                                     {msg.text}
                                 </pre>
                                 <button
-                                    onClick={() => handleCopy(msg.text, idx)}
+                                    onClick={() => handleCopy(msg.text)}
                                     className="skynet-copy-btn"
                                 >
                                     •
