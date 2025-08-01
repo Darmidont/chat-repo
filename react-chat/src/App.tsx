@@ -43,7 +43,6 @@ const splitAssistantResponse = (response: string): string => {
         return response;
     }
 
-
     const part2 = response.substring(assistantIdx, metadataIdx).trim();
     const part3 = response.substring(metadataIdx).trim();
 
@@ -122,7 +121,16 @@ const splitAssistantResponse = (response: string): string => {
                                 key={idx}
                                 className={`skynet-chat-message${msg.role === 'user' ? ' user' : ''}`}
                             >
-                                {msg.text}
+                                <pre style={{ 
+                                    whiteSpace: 'pre-wrap', 
+                                    wordWrap: 'break-word',
+                                    margin: 0,
+                                    fontFamily: 'inherit',
+                                    fontSize: 'inherit',
+                                    lineHeight: 'inherit'
+                                }}>
+                                    {msg.text}
+                                </pre>
                             </div>
                         ))}
                     </div>
