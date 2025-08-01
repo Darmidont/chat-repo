@@ -11,7 +11,7 @@
 }
 
 .skynet-inner-container {
-  max-width: 700px;
+  max-width: 1000px;
   width: 100%;
   font-family: sans-serif;
   color: #fff;
@@ -71,9 +71,30 @@
   border: 1px solid #333;
   background: #23232a;
   padding: 16px;
-  min-height: 200px;
+  min-height: 300px;
+  max-height: 500px;
   margin-bottom: 16px;
   border-radius: 8px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #555 #23232a;
+}
+
+.skynet-chat-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.skynet-chat-area::-webkit-scrollbar-track {
+  background: #23232a;
+}
+
+.skynet-chat-area::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+.skynet-chat-area::-webkit-scrollbar-thumb:hover {
+  background: #666;
 }
 
 .skynet-chat-empty {
@@ -94,6 +115,61 @@
   background: #373749;
   text-align: right;
   font-weight: 500;
+}
+
+.skynet-copy-btn {
+  margin-top: 6px;
+  padding: 4px;
+  background: #3a3a4a;
+  color: #a78bfa;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0.6;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+}
+
+.skynet-copy-btn:hover {
+  opacity: 1;
+  background: #4a4a5a;
+  transform: scale(1.05);
+}
+
+.skynet-chat-message.user .skynet-copy-btn {
+  margin-left: auto;
+  display: flex;
+}
+
+.skynet-scroll-top-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: #a78bfa;
+  color: #18181b;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skynet-scroll-top-btn:hover {
+  background: #8b5cf6;
+  transform: scale(1.1);
 }
 
 .skynet-input-row {

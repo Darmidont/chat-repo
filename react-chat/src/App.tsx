@@ -1,5 +1,21 @@
 import { useState, useRef, useEffect } from 'react'
 import './AppStyles.css';
+
+const copyToClipboard = async (text: string) => {
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch (err) {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        return true;
+    }
+};
 const suggestions = [
     {
         icon: '🌤️',
@@ -53,7 +69,10 @@ const splitAssistantResponse = (response: string): string => {
         const [input, setInput] = useState('');
         const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; text: string }[]>([]);
         const [loading, setLoading] = useState(false);
+        const [copiedMessageId, setCopiedMessageId] = useState<number | null>(null);
+        const [showScrollTop, setShowScrollTop] = useState(false);
         const inputRef = useRef<HTMLInputElement>(null);
+        const chatAreaRef = useRef<HTMLDivElement>(null);
 
         useEffect(() => {
             inputRef.current?.focus();
@@ -64,6 +83,45 @@ const splitAssistantResponse = (response: string): string => {
                 inputRef.current?.focus();
             }
         }, [loading]);
+
+        useEffect(() => {
+            const chatArea = chatAreaRef.current;
+            if (chatArea) {
+                chatArea.addEventListener('scroll', handleScroll);
+                return () => chatArea.removeEventListener('scroll', handleScroll);
+            }
+        }, []);
+
+        // Auto-scroll to bottom when new messages are added
+        useEffect(() => {
+            if (chatAreaRef.current && messages.length > 0) {
+                chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
+            }
+        }, [messages]);
+
+        const handleCopy = async (text: string, messageId: number) => {
+            const success = await copyToClipboard(text);
+            if (success) {
+                setCopiedMessageId(messageId);
+                setTimeout(() => setCopiedMessageId(null), 2000);
+            }
+        };
+
+        const handleScroll = () => {
+            if (chatAreaRef.current) {
+                const { scrollTop } = chatAreaRef.current;
+                setShowScrollTop(scrollTop > 100);
+            }
+        };
+
+        const scrollToTop = () => {
+            if (chatAreaRef.current) {
+                chatAreaRef.current.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        };
 
         const handleSend = async () => {
             if (!input.trim() || loading) return;
@@ -114,7 +172,7 @@ const splitAssistantResponse = (response: string): string => {
                         ))}
                     </div>
                     {/* Chat Messages */}
-                    <div className="skynet-chat-area">
+                    <div className="skynet-chat-area" ref={chatAreaRef}>
                         {messages.length === 0 && <div className="skynet-chat-empty">No messages yet.</div>}
                         {messages.map((msg, idx) => (
                             <div
@@ -131,9 +189,25 @@ const splitAssistantResponse = (response: string): string => {
                                 }}>
                                     {msg.text}
                                 </pre>
+                                <button
+                                    onClick={() => handleCopy(msg.text, idx)}
+                                    className="skynet-copy-btn"
+                                >
+                                    •
+                                </button>
                             </div>
                         ))}
                     </div>
+                    {/* Scroll to Top Button */}
+                    {showScrollTop && (
+                        <button
+                            onClick={scrollToTop}
+                            className="skynet-scroll-top-btn"
+                            title="Scroll to top"
+                        >
+                            ↑
+                        </button>
+                    )}
                     {/* Input */}
                     <div className="skynet-input-row">
                         <input
